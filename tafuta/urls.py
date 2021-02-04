@@ -15,8 +15,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
-from blog.sitemaps import PostSitemap
-from home.views import HomepageView
+from tafuta.apps.blog.sitemaps import PostSitemap
+from tafuta.apps.home.views import HomepageView
 
 sitemaps = {
     'posts': PostSitemap,
@@ -24,9 +24,9 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls')),
+    path('account/', include('tafuta.apps.account.urls')),
     path('', HomepageView.as_view(), name='home'),
-    path('blog/', include('blog.urls', namespace='blog')),
+    path('blog/', include('tafuta.apps.blog.urls', namespace='tafuta.blog')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap')
 ]

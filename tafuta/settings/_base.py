@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import json
+import sys
 from django.core.exceptions import ImproperlyConfigured
 
 with open(os.path.join(os.path.dirname(__file__), 'secrets.json'), 'r') as f:
     secrets = json.loads(f.read())
-    
+
+
 def get_secret(setting):
     """Get the secret variable or return explicit exception."""
     try:
@@ -32,7 +34,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'd#)#ln)5_zjr23g6r&o7o#ogy-t84b7b9r!b%ombf1=o!*qhe8'
+SECRET_KEY = get_secret('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -54,8 +56,9 @@ INSTALLED_APPS = [
 
     'taggit',
 
-    'blog.apps.BlogConfig',
-    'account.apps.AccountConfig',
+    'tafuta.apps.blog.apps.BlogConfig',
+    'tafuta.apps.account.apps.AccountConfig',
+    'tafuta.apps.shop.apps.ShopConfig',
 ]
 
 MIDDLEWARE = [
@@ -142,22 +145,24 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
-    ]
-# ...
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'tafuta', 'site_static'),
-    ]
+]
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'myproject', 'site_static'),
+]
+
+STATIC_URL = f'/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+EMAIL_HOST = get_secret("EMAIL_HOST")
+EMAIL_PORT = get_secret("EMAIL_PORT")
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
