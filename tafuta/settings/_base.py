@@ -11,6 +11,19 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
+
+with open(os.path.join(os.path.dirname(__file__), 'secrets.json'), 'r') as f:
+    secrets = json.loads(f.read())
+    
+def get_secret(setting):
+    """Get the secret variable or return explicit exception."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = f'Set the {setting} secret variable'
+        raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd#)#ln)5_zjr23g6r&o7o#ogy-t84b7b9r!b%ombf1=o!*qhe8'
+# SECRET_KEY = 'd#)#ln)5_zjr23g6r&o7o#ogy-t84b7b9r!b%ombf1=o!*qhe8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -89,9 +102,9 @@ WSGI_APPLICATION = 'tafuta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tafuta',
-        'USER': '',
-        'PASSWORD': '',
+        'NAME': get_secret('DATABASE_NAME'),
+        'USER': get_secret('DATABASE_USER'),
+        'PASSWORD': get_secret('DATABASE_PASSWORD'),
     }
 }
 
@@ -136,3 +149,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+    ]
+# ...
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'tafuta', 'site_static'),
+    ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
