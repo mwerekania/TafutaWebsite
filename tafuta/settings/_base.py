@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import json
 import sys
+
+from django.urls import reverse_lazy
 from django.core.exceptions import ImproperlyConfigured
 
 with open(os.path.join(os.path.dirname(__file__), 'secrets.json'), 'r') as f:
@@ -26,6 +28,10 @@ def get_secret(setting):
     except KeyError:
         error_msg = f'Set the {setting} secret variable'
         raise ImproperlyConfigured(error_msg)
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -54,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.sites','django.contrib.sitemaps',
     'django.contrib.postgres',
 
+    'easy_thumbnails',
     'taggit',
 
     'tafuta.apps.blog.apps.BlogConfig',
