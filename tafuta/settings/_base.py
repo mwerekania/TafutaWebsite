@@ -95,13 +95,6 @@ WSGI_APPLICATION = 'tafuta.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -147,7 +140,7 @@ USE_TZ = True
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    #'account.authentication.EmailAuthBackend',
+    'tafuta.apps.account.authentication.EmailAuthBackend',
     #'social_core.backends.facebook.FacebookOAuth2',
     #'social_core.backends.twitter.TwitterOAuth',
     #'social_core.backends.google.GoogleOAuth2',
@@ -184,8 +177,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' # Google Consumer Secret
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'myproject', 'site_static'),
+    os.path.join(BASE_DIR, 'tafuta','static'),
 ]
 
-STATIC_URL = f'/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
