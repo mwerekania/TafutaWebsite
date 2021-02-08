@@ -12,9 +12,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
+from django.urls import path, include
+
 from tafuta.apps.blog.sitemaps import PostSitemap
 from tafuta.apps.home.views import HomepageView
 
@@ -27,6 +30,7 @@ urlpatterns = [
     path('account/', include('tafuta.apps.account.urls')),
     path('', HomepageView.as_view(), name='home'),
     path('blog/', include('tafuta.apps.blog.urls', namespace='tafuta.blog')),
+    path('images/', include('tafuta.apps.images.urls', namespace='image')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

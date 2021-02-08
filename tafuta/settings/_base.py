@@ -60,11 +60,13 @@ INSTALLED_APPS = [
     'django.contrib.sites','django.contrib.sitemaps',
     'django.contrib.postgres',
 
+    'django_extensions',
     'easy_thumbnails',
     'taggit',
 
-    'tafuta.apps.blog.apps.BlogConfig',
     'tafuta.apps.account.apps.AccountConfig',
+    'tafuta.apps.blog.apps.BlogConfig',
+    'tafuta.apps.images.apps.ImagesConfig',
     'tafuta.apps.shop.apps.ShopConfig',
 ]
 
@@ -167,7 +169,8 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
 
 SOCIAL_AUTH_FACEBOOK_KEY = '' # Facebook App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = '' # Facebook App Secret
